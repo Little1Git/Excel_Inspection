@@ -53,7 +53,12 @@
                                     </excludes>
                                 </filter>
                             </filters>
-
+                            <!-- 添加启动类配置 -->
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>mypkg.ExcelReader</mainClass>
+                                </transformer>
+                            </transformers>
                         </configuration>
                     </execution>
                 </executions>
