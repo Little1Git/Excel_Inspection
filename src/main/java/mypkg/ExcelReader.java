@@ -145,13 +145,6 @@ public class ExcelReader {
         // 文件路径
         String filePath = "C:\\Users\\AQY2SZH\\Desktop\\excelTemplate3\\Corrugated Board_A4_0513.xlsx";
 
-        // 获取第一张表
-        Sheet sheet = getFirstSheetFromFile(filePath);
-        if (sheet == null) {
-            System.out.println("文件读取失败，请检查文件路径或文件格式。");
-            return;
-        }
-
         // 定义 name_to_location 映射
         LinkedHashMap<String, String> name_to_location = new LinkedHashMap<>();
         name_to_location.put("Packaging PN", "U38");
@@ -181,16 +174,6 @@ public class ExcelReader {
         name_to_location.put("Release", "T31");
         name_to_location.put("Resp. dept.", "X31");
 
-
-        // 读取 Excel 并获取 name_to_value
-        LinkedHashMap<String, String> name_to_value = readExcel(name_to_location, sheet);
-
-        // 输出结果
-        System.out.println("读取结果: " + name_to_value);
-
-        //文本框
-//        readFloatingTextbox(filePath);
-
         LinkedHashMap<String, List<String>>  conditions = new LinkedHashMap<>();
         conditions.put("View", Arrays.asList("Outside"));
         conditions.put("FEFCO Type", Arrays.asList("0201", "0200", "0300","Special"));
@@ -199,8 +182,21 @@ public class ExcelReader {
         conditions.put("Printing", Arrays.asList("Yes"));
         conditions.put("Resp. dept.", Arrays.asList("ME/LOD1-CN"));
 
-        checkConditions(conditions,name_to_value);
+        // 获取第一张表
+        Sheet sheet = getFirstSheetFromFile(filePath);
+        if (sheet == null) {
+            System.out.println("文件读取失败，请检查文件路径或文件格式。");
+            return;
+        }
 
+        // 读取 Excel 并获取 name_to_value
+        LinkedHashMap<String, String> name_to_value = readExcel(name_to_location, sheet);
+        System.out.println("读取结果: " + name_to_value);
+
+        //文本框
+//        readFloatingTextbox(filePath);
+
+        checkConditions(conditions,name_to_value);
 
     }
 }
