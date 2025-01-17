@@ -112,19 +112,19 @@ public class ExcelReader {
         return res;
     }
 
-    public static LinkedHashMap<String, String> extractParameters(List<String> parametersToBeOutput, LinkedHashMap<String, String> nameToValue) {
-        LinkedHashMap<String, String> resultMap = new LinkedHashMap<>();
-
-        for (String parameter : parametersToBeOutput) {
-            String value = nameToValue.get(parameter);
-            if (value != null) {
-                resultMap.put(parameter, value);
-            } else {
-                resultMap.put(parameter, "NA");
-            }
-        }
-        return resultMap;
-    }
+//    public static LinkedHashMap<String, String> extractParameters(List<String> parametersToBeOutput, LinkedHashMap<String, String> nameToValue) {
+//        LinkedHashMap<String, String> resultMap = new LinkedHashMap<>();
+//
+//        for (String parameter : parametersToBeOutput) {
+//            String value = nameToValue.get(parameter);
+//            if (value != null) {
+//                resultMap.put(parameter, value);
+//            } else {
+//                resultMap.put(parameter, "NA");
+//            }
+//        }
+//        return resultMap;
+//    }
 
     public static LinkedHashMap<String, Boolean> checkValues(LinkedHashMap<String, String> nameToValue) {
         LinkedHashMap<String, Boolean> resultMap = new LinkedHashMap<>();
@@ -197,8 +197,8 @@ public class ExcelReader {
         LinkedHashMap<String, String> name_to_value = readExcel(name_to_location, sheet);
         System.out.println("读取结果: " + name_to_value);
 
-        //1.输出列表   不用做,全保留
-        LinkedHashMap<String, String> key_value_to_print = extractParameters(Parameters_to_be_output,name_to_value);
+//        //1.输出列表   不用做,全保留
+//        LinkedHashMap<String, String> key_value_to_print = extractParameters(Parameters_to_be_output,name_to_value);
 
         //2.存在列表
         LinkedHashMap<String, Boolean> pass_or_failure = checkValues(name_to_value);
@@ -219,7 +219,7 @@ public class ExcelReader {
 
         System.out.println("pass or failure: "+pass_or_failure);
 
-        System.out.println("key_value_to_print:" + key_value_to_print);
+//        System.out.println("key_value_to_print:" + key_value_to_print);
 
     }
 
