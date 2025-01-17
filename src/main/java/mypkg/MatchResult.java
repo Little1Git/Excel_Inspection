@@ -12,4 +12,14 @@ public class MatchResult {
     public MatchResult() {
         this.expectedValue = new ArrayList<>();
     }
+
+    @Override
+    public String toString() {
+        return "MatchResult{" +
+                "key='" + key + '\'' +
+                ", result='" + result + '\'' +
+                ", actualValue='" + actualValue + '\'' +
+                ", expectedValue=" + expectedValue +
+                '}';
+    }
 }

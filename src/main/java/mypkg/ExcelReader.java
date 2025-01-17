@@ -194,14 +194,29 @@ public class ExcelReader {
 
         //1.输出列表
         LinkedHashMap<String, String> key_value_to_print = extractParameters(Parameters_to_be_output,name_to_value);
-        System.out.println("key_value_to_print:" + key_value_to_print);
+
 
         //2.存在列表
         LinkedHashMap<String, String> pass_or_failure = checkValues(name_to_value);
-        System.out.println("pass or failure: "+pass_or_failure);
+
 
         //3.匹配列表
-        checkConditions(conditions,name_to_value);
+        LinkedHashMap<String, MatchResult> expected_value_and_actual_value = checkConditions(conditions,name_to_value);
+
+        // 遍历 LinkedHashMap 并输出
+        for (Map.Entry<String, MatchResult> entry : expected_value_and_actual_value.entrySet()) {
+            String key = entry.getKey();
+            MatchResult matchResult = entry.getValue();
+
+            // 输出键和 MatchResult 对象的详细信息
+            System.out.println("Key: " + key);
+            System.out.println("MatchResult: " + matchResult);
+            System.out.println(); // 空行分隔
+        }
+
+        System.out.println("pass or failure: "+pass_or_failure);
+
+        System.out.println("key_value_to_print:" + key_value_to_print);
 
     }
 
