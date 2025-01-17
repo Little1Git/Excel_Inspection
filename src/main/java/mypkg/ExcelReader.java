@@ -7,6 +7,10 @@ import org.apache.poi.xssf.usermodel.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class ExcelReader {
@@ -217,6 +221,20 @@ public class ExcelReader {
 
         System.out.println("key_value_to_print:" + key_value_to_print);
 
+    }
+
+    public static void writeLineToFile(String content) {
+        String filePath = "log123.txt";
+        // 将文件路径转换为Path对象
+        Path path = Paths.get(filePath);
+
+        try {
+            // 将内容写入文件，如果文件不存在则创建，如果存在则覆盖
+            Files.write(path, Collections.singletonList(content), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            System.out.println("内容已成功写入文件: " + filePath);
+        } catch (IOException e) {
+            System.err.println("写入文件时发生错误: " + e.getMessage());
+        }
     }
 
 
