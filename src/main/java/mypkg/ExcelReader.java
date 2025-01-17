@@ -192,13 +192,11 @@ public class ExcelReader {
         LinkedHashMap<String, String> name_to_value = readExcel(name_to_location, sheet);
         System.out.println("读取结果: " + name_to_value);
 
-        //1.输出列表
+        //1.输出列表   不用做,全保留
         LinkedHashMap<String, String> key_value_to_print = extractParameters(Parameters_to_be_output,name_to_value);
-
 
         //2.存在列表
         LinkedHashMap<String, String> pass_or_failure = checkValues(name_to_value);
-
 
         //3.匹配列表
         LinkedHashMap<String, MatchResult> expected_value_and_actual_value = checkConditions(conditions,name_to_value);
