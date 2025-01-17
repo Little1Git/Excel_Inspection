@@ -20,6 +20,7 @@ public class MatchResult {
                 "key='" + key + '\'' +
                 ", result='" + result + '\'' +
                 ", actualValue='" + actualValue + '\'' +
+                ", expectedValueString='" + expectedValueString + '\'' +
                 ", expectedValue=" + expectedValue +
                 '}';
     }
