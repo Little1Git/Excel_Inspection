@@ -121,8 +121,8 @@ public class ExcelReader {
         return resultMap;
     }
 
-    public static LinkedHashMap<String, String> checkValues(LinkedHashMap<String, String> nameToValue) {
-        LinkedHashMap<String, String> resultMap = new LinkedHashMap<>();
+    public static LinkedHashMap<String, Boolean> checkValues(LinkedHashMap<String, String> nameToValue) {
+        LinkedHashMap<String, Boolean> resultMap = new LinkedHashMap<>();
 
         for (Map.Entry<String, String> entry : nameToValue.entrySet()) {
             String key = entry.getKey();
@@ -130,9 +130,9 @@ public class ExcelReader {
 
             // 判断值是否为 "NA"
             if (!"NA".equals(value)) {
-                resultMap.put(key, "pass");
+                resultMap.put(key, true);
             } else {
-                resultMap.put(key, "failure");
+                resultMap.put(key, false);
             }
         }
 
@@ -196,7 +196,7 @@ public class ExcelReader {
         LinkedHashMap<String, String> key_value_to_print = extractParameters(Parameters_to_be_output,name_to_value);
 
         //2.存在列表
-        LinkedHashMap<String, String> pass_or_failure = checkValues(name_to_value);
+        LinkedHashMap<String, Boolean> pass_or_failure = checkValues(name_to_value);
 
         //3.匹配列表
         LinkedHashMap<String, MatchResult> expected_value_and_actual_value = checkConditions(conditions,name_to_value);
