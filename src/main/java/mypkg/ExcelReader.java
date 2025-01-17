@@ -10,13 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class ExcelReader {
-
-    /**
-     * 读取 Excel 文件并返回第一张表。
-     *
-     * @param filePath 文件路径
-     * @return 第一张表（Sheet 对象），如果读取失败则返回 null
-     */
+    
     public static Sheet getFirstSheetFromFile(String filePath) {
         try (FileInputStream fileInputStream = new FileInputStream(new File(filePath));
              Workbook workbook = new XSSFWorkbook(fileInputStream)) {
@@ -28,13 +22,6 @@ public class ExcelReader {
         }
     }
 
-    /**
-     * 读取指定单元格的内容。
-     *
-     * @param sheet          工作表对象
-     * @param cellCoordinate 单元格坐标（如 "A1"、"B2" 等）
-     * @return 单元格内容的字符串表示
-     */
     public static String getCellContent(Sheet sheet, String cellCoordinate) {
         if (sheet == null) {
             return ""; // 如果表为空，返回空字符串
@@ -78,13 +65,6 @@ public class ExcelReader {
         }
     }
 
-    /**
-     * 将 name_to_location 转换为 name_to_value。
-     *
-     * @param name_to_location 名称到单元格坐标的映射
-     * @param sheet            工作表对象
-     * @return 名称到单元格内容的映射
-     */
     public static LinkedHashMap<String, String> readExcel(LinkedHashMap<String, String> name_to_location, Sheet sheet) {
         LinkedHashMap<String, String> name_to_value = new LinkedHashMap<>();
 
@@ -102,8 +82,6 @@ public class ExcelReader {
 
         return name_to_value;
     }
-
-
 
     public static void checkConditions(LinkedHashMap<String, List<String>> conditions, LinkedHashMap<String, String> name_to_value) {
         for (Map.Entry<String, List<String>> entry : conditions.entrySet()) {
