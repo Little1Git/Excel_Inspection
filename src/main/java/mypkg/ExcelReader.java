@@ -83,18 +83,28 @@ public class ExcelReader {
         return name_to_value;
     }
 
-    public static void checkConditions(LinkedHashMap<String, List<String>> conditions, LinkedHashMap<String, String> name_to_value) {
-        for (Map.Entry<String, List<String>> entry : conditions.entrySet()) {
+    public static LinkedHashMap<String, MatchResult> checkConditions(LinkedHashMap<String, ArrayList<String>> conditions, LinkedHashMap<String, String> name_to_value) {
+        LinkedHashMap<String, MatchResult> res = new LinkedHashMap<>();
+        for (Map.Entry<String, ArrayList<String>> entry : conditions.entrySet()) {
             String key = entry.getKey();
-            List<String> expectedValues = entry.getValue();
+            ArrayList<String> expectedValues = entry.getValue();
             String actualValue = name_to_value.get(key);
 
+            MatchResult mr = new MatchResult();
+            mr.key = key;
+            mr.actualValue=actualValue;
+            mr.expectedValue=expectedValues;
+
             if (actualValue != null && expectedValues.contains(actualValue)) {
-                System.out.println("Success : key: " + key + ", Get value: " + actualValue);
+                System.out.println("pass : key: " + key + ", Get value: " + actualValue);
+                mr.result="pass";
             } else {
-                System.out.println("Failure : key: " + key + ", Expected values: " + expectedValues + ", Actual value: " + actualValue);
+                System.out.println("failure : key: " + key + ", Expected values: " + expectedValues + ", Actual value: " + actualValue);
+                mr.result="failure";
             }
+            res.put(key,mr);
         }
+        return res;
     }
 
     public static LinkedHashMap<String, String> extractParameters(List<String> parametersToBeOutput, LinkedHashMap<String, String> nameToValue) {
@@ -161,13 +171,13 @@ public class ExcelReader {
         name_to_location.put("Release", "T31");
         name_to_location.put("Resp. dept.", "X31");
 
-        LinkedHashMap<String, List<String>>  conditions = new LinkedHashMap<>();
-        conditions.put("View", Arrays.asList("Outside"));
-        conditions.put("FEFCO Type", Arrays.asList("0201", "0200", "0300","Special"));
-        conditions.put("Manufacturer's Joint", Arrays.asList("Inside"));
-        conditions.put("Type of Joining", Arrays.asList("Stapled", "Glued","Special"));
-        conditions.put("Printing", Arrays.asList("Yes"));
-        conditions.put("Resp. dept.", Arrays.asList("ME/LOD1-CN"));
+        LinkedHashMap<String, ArrayList<String>>  conditions = new LinkedHashMap<>();
+        conditions.put("View", new ArrayList<>(Arrays.asList("Outside")));
+        conditions.put("FEFCO Type", new ArrayList<>(Arrays.asList("0201", "0200", "0300","Special")));
+        conditions.put("Manufacturer's Joint", new ArrayList<>(Arrays.asList("Inside")));
+        conditions.put("Type of Joining", new ArrayList<>(Arrays.asList("Stapled", "Glued","Special")));
+        conditions.put("Printing", new ArrayList<>(Arrays.asList("Yes")));
+        conditions.put("Resp. dept.", new ArrayList<>(Arrays.asList("ME/LOD1-CN")));
 
         List<String> Parameters_to_be_output = Arrays.asList("Packaging PN", "Description", "Weight","Special","FEFCO Type","Inner Dimensions","Outside Dimensions","ECT","BST","BCT");
 

@@ -1,10 +1,15 @@
 package mypkg;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class MatchResult {
     public String key;
     public String result;
     public String actualValue;
-    public List<String> expectedValue;
+    public ArrayList<String> expectedValue;
+
+    // 构造函数
+    public MatchResult() {
+        this.expectedValue = new ArrayList<>();
+    }
 }
