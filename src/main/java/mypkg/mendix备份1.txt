@@ -1,117 +1,112 @@
-// BEGIN USER CODE
+		// BEGIN USER CODE
 
-// 定义 name_to_location 映射
-LinkedHashMap<String, String> name_to_location = new LinkedHashMap<>();
-name_to_location.put("Packaging PN", "U38");
-name_to_location.put("Description", "S36");
-name_to_location.put("Material", "K35");
-name_to_location.put("Weight", "M37");
-name_to_location.put("FEFCO Type", "AE5");
-name_to_location.put("Inner Dimensions", "AE8");
-name_to_location.put("Outside Dimensions", "AE9");
-name_to_location.put("ECT", "Y23");
-name_to_location.put("BST", "AA23");
-name_to_location.put("BCT", "AE17");
-name_to_location.put("View", "AE4");
-name_to_location.put("Manufacturer's Joint", "AE6");
-name_to_location.put("Type of Joining", "AE7");
-name_to_location.put("Printing", "AE10");
-name_to_location.put("Sort and/or Flute Combination", "AB");
-name_to_location.put("(Material Thickness)", "AE13");
-name_to_location.put("Glued Moisture-Resistant", "AE14");
-name_to_location.put("PET", "AE23");
-name_to_location.put("Ind.", "H31");
-name_to_location.put("Change", "I31");
-name_to_location.put("YYYYMMDD", "N31");
-name_to_location.put("Drawn", "Q31");
-name_to_location.put("Checked", "R31");
-name_to_location.put("Release", "T31");
-name_to_location.put("Resp. dept.", "X31");
+        // 定义 name_to_location 映射
+        LinkedHashMap<String, String> name_to_location = new LinkedHashMap<>();
+        name_to_location.put("Packaging PN", "U38");
+        name_to_location.put("Description", "S36");
+        name_to_location.put("Material", "K35");
+        name_to_location.put("Weight", "M37");
+        name_to_location.put("FEFCO Type", "AE5");
+        name_to_location.put("Inner Dimensions", "AE8");
+        name_to_location.put("Outside Dimensions", "AE9");
+        name_to_location.put("ECT", "Y23");
+        name_to_location.put("BST", "AA23");
+        name_to_location.put("BCT", "AE17");
+        name_to_location.put("View", "AE4");
+        name_to_location.put("Manufacturer's Joint", "AE6");
+        name_to_location.put("Type of Joining", "AE7");
+        name_to_location.put("Printing", "AE10");
+        name_to_location.put("Sort and/or Flute Combination", "AB");
+        name_to_location.put("(Material Thickness)", "AE13");
+        name_to_location.put("Glued Moisture-Resistant", "AE14");
+        name_to_location.put("PET", "AE23");
+        name_to_location.put("Ind.", "H31");
+        name_to_location.put("Change", "I31");
+        name_to_location.put("YYYYMMDD", "N31");
+        name_to_location.put("Drawn", "Q31");
+        name_to_location.put("Checked", "R31");
+        name_to_location.put("Release", "T31");
+        name_to_location.put("Resp. dept.", "X31");
 
-LinkedHashMap<String, ArrayList<String>>  conditions = new LinkedHashMap<>();
-conditions.put("View", new ArrayList<>(Arrays.asList("Outside")));
-conditions.put("FEFCO Type", new ArrayList<>(Arrays.asList("0201", "0200", "0300","Special")));
-conditions.put("Manufacturer's Joint", new ArrayList<>(Arrays.asList("Inside")));
-conditions.put("Type of Joining", new ArrayList<>(Arrays.asList("Stapled", "Glued","Special")));
-conditions.put("Printing", new ArrayList<>(Arrays.asList("Yes")));
-conditions.put("Resp. dept.", new ArrayList<>(Arrays.asList("ME/LOD1-CN")));
+        LinkedHashMap<String, ArrayList<String>>  conditions = new LinkedHashMap<>();
+        conditions.put("View", new ArrayList<>(Arrays.asList("Outside")));
+        conditions.put("FEFCO Type", new ArrayList<>(Arrays.asList("0201", "0200", "0300","Special")));
+        conditions.put("Manufacturer's Joint", new ArrayList<>(Arrays.asList("Inside")));
+        conditions.put("Type of Joining", new ArrayList<>(Arrays.asList("Stapled", "Glued","Special")));
+        conditions.put("Printing", new ArrayList<>(Arrays.asList("Yes")));
+        conditions.put("Resp. dept.", new ArrayList<>(Arrays.asList("ME/LOD1-CN")));
 
-List<String> Parameters_to_be_output = Arrays.asList("Packaging PN", "Description", "Weight","Special","FEFCO Type","Inner Dimensions","Outside Dimensions","ECT","BST","BCT");
+        // 获取第一张表
+        Sheet sheet = ExcelReader.getFirstSheetFromFile(filePath);
+        if (sheet == null) {
+            System.out.println("Failed to read the file. Please check the file path or file format.");
+            // return;
+        }
 
-// 获取第一张表
-Sheet sheet = ExcelReader.getFirstSheetFromFile(filePath);
-if (sheet == null) {
-    System.out.println("Failed to read the file. Please check the file path or file format.");
-    // return;
-}
+        // 读取 Excel 并获取 name_to_value
+        LinkedHashMap<String, String> name_to_value = ExcelReader.readExcel(name_to_location, sheet);
+        System.out.println("Read : " + name_to_value);
 
-// 读取 Excel 并获取 name_to_value
-LinkedHashMap<String, String> name_to_value = ExcelReader.readExcel(name_to_location, sheet);
-System.out.println("Read : " + name_to_value);
-
-//1.输出列表   不用做,全保留
-LinkedHashMap<String, String> key_value_to_print = ExcelReader.extractParameters(Parameters_to_be_output,name_to_value);
-
-this.Parameter_String_value.setPackagingPN(key_value_to_print.get("Packaging PN"));
-this.Parameter_String_value.setDescription(key_value_to_print.get("Description"));
-this.Parameter_String_value.setMaterial(key_value_to_print.get("Material"));
-this.Parameter_String_value.setWeight(key_value_to_print.get("Weight"));
-this.Parameter_String_value.setFEFCOtype(key_value_to_print.get("FEFCO Type"));
-this.Parameter_String_value.setInnerDimensions(key_value_to_print.get("Inner Dimensions"));
-this.Parameter_String_value.setOutsideDimensions(key_value_to_print.get("Outside Dimensions"));
-this.Parameter_String_value.setECT(key_value_to_print.get("ECT"));
-this.Parameter_String_value.setBST(key_value_to_print.get("BST"));
-this.Parameter_String_value.setBCT(key_value_to_print.get("BCT"));
-this.Parameter_String_value.setView(key_value_to_print.get("View"));
-this.Parameter_String_value.setManufacturersJoint(key_value_to_print.get("Manufacturer's Joint"));
-this.Parameter_String_value.setTypeofJoining(key_value_to_print.get("Type of Joining"));
-this.Parameter_String_value.setPrinting(key_value_to_print.get("Printing"));
-this.Parameter_String_value.setSortandorFluteCombination(key_value_to_print.get("Sort and/or Flute Combination"));
-this.Parameter_String_value.setMaterialThickness(key_value_to_print.get("(Material Thickness)"));
-this.Parameter_String_value.setGluedMoistureResistant(key_value_to_print.get("Glued Moisture-Resistant"));
-this.Parameter_String_value.setPET(key_value_to_print.get("PET"));
-this.Parameter_String_value.setInd(key_value_to_print.get("Ind."));
-this.Parameter_String_value.setChange(key_value_to_print.get("Change"));
-this.Parameter_String_value.setYYYYMMDD(key_value_to_print.get("YYYYMMDD"));
-this.Parameter_String_value.setDrawn(key_value_to_print.get("Drawn"));
-this.Parameter_String_value.setChecked(key_value_to_print.get("Checked"));
-this.Parameter_String_value.setRelease(key_value_to_print.get("Release"));
-this.Parameter_String_value.setRespdept(key_value_to_print.get("Resp. dept."));
+		this.Parameter_String_value.setPackagingPN(name_to_location.get("Packaging PN"));
+		this.Parameter_String_value.setDescription(name_to_location.get("Description"));
+		this.Parameter_String_value.setMaterial(name_to_location.get("Material"));
+		this.Parameter_String_value.setWeight(name_to_location.get("Weight"));
+		this.Parameter_String_value.setFEFCOtype(name_to_location.get("FEFCO Type"));
+		this.Parameter_String_value.setInnerDimensions(name_to_location.get("Inner Dimensions"));
+		this.Parameter_String_value.setOutsideDimensions(name_to_location.get("Outside Dimensions"));
+		this.Parameter_String_value.setECT(name_to_location.get("ECT"));
+		this.Parameter_String_value.setBST(name_to_location.get("BST"));
+		this.Parameter_String_value.setBCT(name_to_location.get("BCT"));
+		this.Parameter_String_value.setView(name_to_location.get("View"));
+		this.Parameter_String_value.setManufacturersJoint(name_to_location.get("Manufacturer's Joint"));
+		this.Parameter_String_value.setTypeofJoining(name_to_location.get("Type of Joining"));
+		this.Parameter_String_value.setPrinting(name_to_location.get("Printing"));
+		this.Parameter_String_value.setSortandorFluteCombination(name_to_location.get("Sort and/or Flute Combination"));
+		this.Parameter_String_value.setMaterialThickness(name_to_location.get("(Material Thickness)"));
+		this.Parameter_String_value.setGluedMoistureResistant(name_to_location.get("Glued Moisture-Resistant"));
+		this.Parameter_String_value.setPET(name_to_location.get("PET"));
+		this.Parameter_String_value.setInd(name_to_location.get("Ind."));
+		this.Parameter_String_value.setChange(name_to_location.get("Change"));
+		this.Parameter_String_value.setYYYYMMDD(name_to_location.get("YYYYMMDD"));
+		this.Parameter_String_value.setDrawn(name_to_location.get("Drawn"));
+		this.Parameter_String_value.setChecked(name_to_location.get("Checked"));
+		this.Parameter_String_value.setRelease(name_to_location.get("Release"));
+		this.Parameter_String_value.setRespdept(name_to_location.get("Resp. dept."));
 
 
-//2.存在列表
-LinkedHashMap<String, Boolean> pass_or_failure = ExcelReader.checkValues(name_to_value);
-this.Parameter_true_or_false.setPackagingPN(pass_or_failure.get("Packaging PN"));
-this.Parameter_true_or_false.setDescription(pass_or_failure.get("Description"));
-this.Parameter_true_or_false.setMaterial(pass_or_failure.get("Material"));
-this.Parameter_true_or_false.setWeight(pass_or_failure.get("Weight"));
-this.Parameter_true_or_false.setFEFCOtype(pass_or_failure.get("FEFCO Type"));
-this.Parameter_true_or_false.setInnerDimensions(pass_or_failure.get("Inner Dimensions"));
-this.Parameter_true_or_false.setOutsideDimensions(pass_or_failure.get("Outside Dimensions"));
-this.Parameter_true_or_false.setECT(pass_or_failure.get("ECT"));
-this.Parameter_true_or_false.setBST(pass_or_failure.get("BST"));
-this.Parameter_true_or_false.setBCT(pass_or_failure.get("BCT"));
-this.Parameter_true_or_false.setView(pass_or_failure.get("View"));
-this.Parameter_true_or_false.setManufacturersJoint(pass_or_failure.get("Manufacturer's Joint"));
-this.Parameter_true_or_false.setTypeofJoining(pass_or_failure.get("Type of Joining"));
-this.Parameter_true_or_false.setPrinting(pass_or_failure.get("Printing"));
-this.Parameter_true_or_false.setSortandorFluteCombination(pass_or_failure.get("Sort and/or Flute Combination"));
-this.Parameter_true_or_false.setMaterialThickness(pass_or_failure.get("(Material Thickness)"));
-this.Parameter_true_or_false.setGluedMoistureResistant(pass_or_failure.get("Glued Moisture-Resistant"));
-this.Parameter_true_or_false.setPET(pass_or_failure.get("PET"));
-this.Parameter_true_or_false.setInd(pass_or_failure.get("Ind."));
-this.Parameter_true_or_false.setChange(pass_or_failure.get("Change"));
-this.Parameter_true_or_false.setYYYYMMDD(pass_or_failure.get("YYYYMMDD"));
-this.Parameter_true_or_false.setDrawn(pass_or_failure.get("Drawn"));
-this.Parameter_true_or_false.setChecked(pass_or_failure.get("Checked"));
-this.Parameter_true_or_false.setRelease(pass_or_failure.get("Release"));
-this.Parameter_true_or_false.setRespdept(pass_or_failure.get("Resp. dept."));
+        //2.存在列表
+        LinkedHashMap<String, Boolean> pass_or_failure = ExcelReader.checkValues(name_to_value);
+		this.Parameter_true_or_false.setPackagingPN(pass_or_failure.get("Packaging PN"));
+		this.Parameter_true_or_false.setDescription(pass_or_failure.get("Description"));
+		this.Parameter_true_or_false.setMaterial(pass_or_failure.get("Material"));
+		this.Parameter_true_or_false.setWeight(pass_or_failure.get("Weight"));
+		this.Parameter_true_or_false.setFEFCOtype(pass_or_failure.get("FEFCO Type"));
+		this.Parameter_true_or_false.setInnerDimensions(pass_or_failure.get("Inner Dimensions"));
+		this.Parameter_true_or_false.setOutsideDimensions(pass_or_failure.get("Outside Dimensions"));
+		this.Parameter_true_or_false.setECT(pass_or_failure.get("ECT"));
+		this.Parameter_true_or_false.setBST(pass_or_failure.get("BST"));
+		this.Parameter_true_or_false.setBCT(pass_or_failure.get("BCT"));
+		this.Parameter_true_or_false.setView(pass_or_failure.get("View"));
+		this.Parameter_true_or_false.setManufacturersJoint(pass_or_failure.get("Manufacturer's Joint"));
+		this.Parameter_true_or_false.setTypeofJoining(pass_or_failure.get("Type of Joining"));
+		this.Parameter_true_or_false.setPrinting(pass_or_failure.get("Printing"));
+		this.Parameter_true_or_false.setSortandorFluteCombination(pass_or_failure.get("Sort and/or Flute Combination"));
+		this.Parameter_true_or_false.setMaterialThickness(pass_or_failure.get("(Material Thickness)"));
+		this.Parameter_true_or_false.setGluedMoistureResistant(pass_or_failure.get("Glued Moisture-Resistant"));
+		this.Parameter_true_or_false.setPET(pass_or_failure.get("PET"));
+		this.Parameter_true_or_false.setInd(pass_or_failure.get("Ind."));
+		this.Parameter_true_or_false.setChange(pass_or_failure.get("Change"));
+		this.Parameter_true_or_false.setYYYYMMDD(pass_or_failure.get("YYYYMMDD"));
+		this.Parameter_true_or_false.setDrawn(pass_or_failure.get("Drawn"));
+		this.Parameter_true_or_false.setChecked(pass_or_failure.get("Checked"));
+		this.Parameter_true_or_false.setRelease(pass_or_failure.get("Release"));
+		this.Parameter_true_or_false.setRespdept(pass_or_failure.get("Resp. dept."));
 
 
-//3.匹配列表
-LinkedHashMap<String, MatchResult> expected_value_and_actual_value = ExcelReader.checkConditions(conditions,name_to_value);
+        //3.匹配列表
+        LinkedHashMap<String, MatchResult> expected_value_and_actual_value = ExcelReader.checkConditions(conditions,name_to_value);
 
 
 
-return this.Parameter_String_value.getMendixObject();
-// END USER CODE
+		return this.Parameter_String_value.getMendixObject();
+		// END USER CODE

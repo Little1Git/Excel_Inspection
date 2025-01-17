@@ -229,8 +229,8 @@ public class ExcelReader {
         Path path = Paths.get(filePath);
 
         try {
-            // 将内容写入文件，如果文件不存在则创建，如果存在则覆盖
-            Files.write(path, Collections.singletonList(content), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+            // 将内容写入文件，如果文件不存在则创建，如果存在则追加到文件末尾
+            Files.write(path, Collections.singletonList(content), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
             System.out.println("内容已成功写入文件: " + filePath);
         } catch (IOException e) {
             System.err.println("写入文件时发生错误: " + e.getMessage());
