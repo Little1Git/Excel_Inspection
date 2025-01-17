@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class ExcelReader {
-    
+
     public static Sheet getFirstSheetFromFile(String filePath) {
         try (FileInputStream fileInputStream = new FileInputStream(new File(filePath));
              Workbook workbook = new XSSFWorkbook(fileInputStream)) {
@@ -97,6 +97,38 @@ public class ExcelReader {
         }
     }
 
+    public static LinkedHashMap<String, String> extractParameters(List<String> parametersToBeOutput, LinkedHashMap<String, String> nameToValue) {
+        LinkedHashMap<String, String> resultMap = new LinkedHashMap<>();
+
+        for (String parameter : parametersToBeOutput) {
+            String value = nameToValue.get(parameter);
+            if (value != null) {
+                resultMap.put(parameter, value);
+            } else {
+                resultMap.put(parameter, "NA");
+            }
+        }
+        return resultMap;
+    }
+
+    public static LinkedHashMap<String, String> checkValues(LinkedHashMap<String, String> nameToValue) {
+        LinkedHashMap<String, String> resultMap = new LinkedHashMap<>();
+
+        for (Map.Entry<String, String> entry : nameToValue.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+
+            // 判断值是否为 "NA"
+            if (!"NA".equals(value)) {
+                resultMap.put(key, "pass");
+            } else {
+                resultMap.put(key, "failure");
+            }
+        }
+
+        return resultMap;
+    }
+
     public static void main(String[] args) {
         // 文件路径
         String filePath = "C:\\Users\\AQY2SZH\\Desktop\\excelTemplate3\\Corrugated Board_A4_0513.xlsx";
@@ -113,7 +145,6 @@ public class ExcelReader {
         name_to_location.put("ECT", "Y23");
         name_to_location.put("BST", "AA23");
         name_to_location.put("BCT", "AE17");
-
         name_to_location.put("View", "AE4");
         name_to_location.put("Manufacturer's Joint", "AE6");
         name_to_location.put("Type of Joining", "AE7");
@@ -140,7 +171,6 @@ public class ExcelReader {
 
         List<String> Parameters_to_be_output = Arrays.asList("Packaging PN", "Description", "Weight","Special","FEFCO Type","Inner Dimensions","Outside Dimensions","ECT","BST","BCT");
 
-
         // 获取第一张表
         Sheet sheet = getFirstSheetFromFile(filePath);
         if (sheet == null) {
@@ -152,9 +182,15 @@ public class ExcelReader {
         LinkedHashMap<String, String> name_to_value = readExcel(name_to_location, sheet);
         System.out.println("读取结果: " + name_to_value);
 
-        //文本框
-//        readFloatingTextbox(filePath);
+        //1.输出列表
+        LinkedHashMap<String, String> key_value_to_print = extractParameters(Parameters_to_be_output,name_to_value);
+        System.out.println("key_value_to_print:" + key_value_to_print);
 
+        //2.存在列表
+        LinkedHashMap<String, String> pass_or_failure = checkValues(name_to_value);
+        System.out.println("pass or failure: "+pass_or_failure);
+
+        //3.匹配列表
         checkConditions(conditions,name_to_value);
 
     }
