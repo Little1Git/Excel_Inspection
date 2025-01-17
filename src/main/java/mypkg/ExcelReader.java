@@ -103,29 +103,7 @@ public class ExcelReader {
         return name_to_value;
     }
 
-    public static String readFloatingTextbox(String filePath) {
 
-        try (FileInputStream fis = new FileInputStream(filePath);
-             XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
-
-            XSSFSheet sheet = workbook.getSheetAt(0);
-            XSSFDrawing drawing = sheet.createDrawingPatriarch();
-
-            if (drawing != null) {
-                for (XSSFShape shape : drawing.getShapes()) {
-                    if (shape instanceof XSSFSimpleShape) {
-                        XSSFSimpleShape simpleShape = (XSSFSimpleShape) shape;
-                        String text = simpleShape.getText();
-                        System.out.println(text);
-
-                    }
-                }
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-        }
-        return "finish";
-    }
 
     public static void checkConditions(LinkedHashMap<String, List<String>> conditions, LinkedHashMap<String, String> name_to_value) {
         for (Map.Entry<String, List<String>> entry : conditions.entrySet()) {
@@ -134,9 +112,9 @@ public class ExcelReader {
             String actualValue = name_to_value.get(key);
 
             if (actualValue != null && expectedValues.contains(actualValue)) {
-                System.out.println("Condition met for key: " + key + ", value: " + actualValue);
+                System.out.println("Success : key: " + key + ", Get value: " + actualValue);
             } else {
-                System.out.println("Condition not met for key: " + key + ", expected values: " + expectedValues + ", actual value: " + actualValue);
+                System.out.println("Failure : key: " + key + ", Expected values: " + expectedValues + ", Actual value: " + actualValue);
             }
         }
     }
@@ -150,7 +128,7 @@ public class ExcelReader {
         name_to_location.put("Packaging PN", "U38");
         name_to_location.put("Description", "S36");
         name_to_location.put("Material", "K35");
-        name_to_location.put("Weight ", "M37");
+        name_to_location.put("Weight", "M37");
         name_to_location.put("FEFCO Type", "AE5");
         name_to_location.put("Inner Dimensions", "AE8");
         name_to_location.put("Outside Dimensions", "AE9");
@@ -182,6 +160,9 @@ public class ExcelReader {
         conditions.put("Printing", Arrays.asList("Yes"));
         conditions.put("Resp. dept.", Arrays.asList("ME/LOD1-CN"));
 
+        List<String> Parameters_to_be_output = Arrays.asList("Packaging PN", "Description", "Weight","Special","FEFCO Type","Inner Dimensions","Outside Dimensions","ECT","BST","BCT");
+
+
         // 获取第一张表
         Sheet sheet = getFirstSheetFromFile(filePath);
         if (sheet == null) {
@@ -199,4 +180,6 @@ public class ExcelReader {
         checkConditions(conditions,name_to_value);
 
     }
+
+
 }
