@@ -7,8 +7,7 @@ import org.apache.poi.xssf.usermodel.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ExcelReader {
 
@@ -128,6 +127,20 @@ public class ExcelReader {
         return "finish";
     }
 
+    public static void checkConditions(LinkedHashMap<String, List<String>> conditions, LinkedHashMap<String, String> name_to_value) {
+        for (Map.Entry<String, List<String>> entry : conditions.entrySet()) {
+            String key = entry.getKey();
+            List<String> expectedValues = entry.getValue();
+            String actualValue = name_to_value.get(key);
+
+            if (actualValue != null && expectedValues.contains(actualValue)) {
+                System.out.println("Condition met for key: " + key + ", value: " + actualValue);
+            } else {
+                System.out.println("Condition not met for key: " + key + ", expected values: " + expectedValues + ", actual value: " + actualValue);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         // 文件路径
         String filePath = "C:\\Users\\AQY2SZH\\Desktop\\excelTemplate3\\Corrugated Board_A4_0513.xlsx";
@@ -141,9 +154,33 @@ public class ExcelReader {
 
         // 定义 name_to_location 映射
         LinkedHashMap<String, String> name_to_location = new LinkedHashMap<>();
-        name_to_location.put("parameter1", "AE4");
-        name_to_location.put("parameter2", "AE5");
-        name_to_location.put("parameter3", "AE6");
+        name_to_location.put("Packaging PN", "U38");
+        name_to_location.put("Description", "S36");
+        name_to_location.put("Material", "K35");
+        name_to_location.put("Weight ", "M37");
+        name_to_location.put("FEFCO Type", "AE5");
+        name_to_location.put("Inner Dimensions", "AE8");
+        name_to_location.put("Outside Dimensions", "AE9");
+        name_to_location.put("ECT", "Y23");
+        name_to_location.put("BST", "AA23");
+        name_to_location.put("BCT", "AE17");
+
+        name_to_location.put("View", "AE4");
+        name_to_location.put("Manufacturer's Joint", "AE6");
+        name_to_location.put("Type of Joining", "AE7");
+        name_to_location.put("Printing", "AE10");
+        name_to_location.put("Sort and/or Flute Combination", "AB");
+        name_to_location.put("(Material Thickness)", "AE13");
+        name_to_location.put("Glued Moisture-Resistant", "AE14");
+        name_to_location.put("PET", "AE23");
+        name_to_location.put("Ind.", "H31");
+        name_to_location.put("Change", "I31");
+        name_to_location.put("YYYYMMDD", "N31");
+        name_to_location.put("Drawn", "Q31");
+        name_to_location.put("Checked", "R31");
+        name_to_location.put("Release", "T31");
+        name_to_location.put("Resp. dept.", "X31");
+
 
         // 读取 Excel 并获取 name_to_value
         LinkedHashMap<String, String> name_to_value = readExcel(name_to_location, sheet);
@@ -152,6 +189,18 @@ public class ExcelReader {
         System.out.println("读取结果: " + name_to_value);
 
         //文本框
-        readFloatingTextbox(filePath);
+//        readFloatingTextbox(filePath);
+
+        LinkedHashMap<String, List<String>>  conditions = new LinkedHashMap<>();
+        conditions.put("View", Arrays.asList("Outside"));
+        conditions.put("FEFCO Type", Arrays.asList("0201", "0200", "0300","Special"));
+        conditions.put("Manufacturer's Joint", Arrays.asList("Inside"));
+        conditions.put("Type of Joining", Arrays.asList("Stapled", "Glued","Special"));
+        conditions.put("Printing", Arrays.asList("Yes"));
+        conditions.put("Resp. dept.", Arrays.asList("ME/LOD1-CN"));
+
+        checkConditions(conditions,name_to_value);
+
+
     }
 }
