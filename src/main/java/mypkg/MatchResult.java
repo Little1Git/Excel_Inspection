@@ -7,6 +7,7 @@ public class MatchResult {
     public String result;
     public String actualValue;
     public ArrayList<String> expectedValue;
+    public String expectedValueString;
 
     // 构造函数
     public MatchResult() {

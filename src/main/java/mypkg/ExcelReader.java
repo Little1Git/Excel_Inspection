@@ -94,6 +94,7 @@ public class ExcelReader {
             mr.key = key;
             mr.actualValue=actualValue;
             mr.expectedValue=expectedValues;
+            mr.expectedValueString=String.join(", ", expectedValues);
 
             if (actualValue != null && expectedValues.contains(actualValue)) {
                 System.out.println("pass : key: " + key + ", Get value: " + actualValue);
