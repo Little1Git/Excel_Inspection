@@ -2,7 +2,7 @@ package mypkg;
 
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellReference;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -104,9 +104,33 @@ public class ExcelReader {
         return name_to_value;
     }
 
+    public static String readFloatingTextbox(String filePath) {
+
+        try (FileInputStream fis = new FileInputStream(filePath);
+             XSSFWorkbook workbook = new XSSFWorkbook(fis)) {
+
+            XSSFSheet sheet = workbook.getSheetAt(0);
+            XSSFDrawing drawing = sheet.createDrawingPatriarch();
+
+            if (drawing != null) {
+                for (XSSFShape shape : drawing.getShapes()) {
+                    if (shape instanceof XSSFSimpleShape) {
+                        XSSFSimpleShape simpleShape = (XSSFSimpleShape) shape;
+                        String text = simpleShape.getText();
+                        System.out.println(text);
+
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return "finish";
+    }
+
     public static void main(String[] args) {
         // 文件路径
-        String filePath = "C:\\Users\\opencv\\Desktop\\test.xlsx";
+        String filePath = "C:\\Users\\AQY2SZH\\Desktop\\excelTemplate3\\Corrugated Board_A4_0513.xlsx";
 
         // 获取第一张表
         Sheet sheet = getFirstSheetFromFile(filePath);
@@ -117,14 +141,17 @@ public class ExcelReader {
 
         // 定义 name_to_location 映射
         LinkedHashMap<String, String> name_to_location = new LinkedHashMap<>();
-        name_to_location.put("parameter1", "Z5");
-        name_to_location.put("parameter2", "AA6");
-        name_to_location.put("parameter3", "AB7");
+        name_to_location.put("parameter1", "AE4");
+        name_to_location.put("parameter2", "AE5");
+        name_to_location.put("parameter3", "AE6");
 
         // 读取 Excel 并获取 name_to_value
         LinkedHashMap<String, String> name_to_value = readExcel(name_to_location, sheet);
 
         // 输出结果
         System.out.println("读取结果: " + name_to_value);
+
+        //文本框
+        readFloatingTextbox(filePath);
     }
 }
