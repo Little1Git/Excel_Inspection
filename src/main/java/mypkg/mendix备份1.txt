@@ -1,5 +1,6 @@
 		// BEGIN USER CODE
 
+
         // 定义 name_to_location 映射
         LinkedHashMap<String, String> name_to_location = new LinkedHashMap<>();
         name_to_location.put("Packaging PN", "U38");
@@ -44,34 +45,35 @@
         }
 
         // 读取 Excel 并获取 name_to_value
+		// 1.读取值列表
         LinkedHashMap<String, String> name_to_value = ExcelReader.readExcel(name_to_location, sheet);
         System.out.println("Read : " + name_to_value);
 
-		this.Parameter_String_value.setPackagingPN(name_to_location.get("Packaging PN"));
-		this.Parameter_String_value.setDescription(name_to_location.get("Description"));
-		this.Parameter_String_value.setMaterial(name_to_location.get("Material"));
-		this.Parameter_String_value.setWeight(name_to_location.get("Weight"));
-		this.Parameter_String_value.setFEFCOtype(name_to_location.get("FEFCO Type"));
-		this.Parameter_String_value.setInnerDimensions(name_to_location.get("Inner Dimensions"));
-		this.Parameter_String_value.setOutsideDimensions(name_to_location.get("Outside Dimensions"));
-		this.Parameter_String_value.setECT(name_to_location.get("ECT"));
-		this.Parameter_String_value.setBST(name_to_location.get("BST"));
-		this.Parameter_String_value.setBCT(name_to_location.get("BCT"));
-		this.Parameter_String_value.setView(name_to_location.get("View"));
-		this.Parameter_String_value.setManufacturersJoint(name_to_location.get("Manufacturer's Joint"));
-		this.Parameter_String_value.setTypeofJoining(name_to_location.get("Type of Joining"));
-		this.Parameter_String_value.setPrinting(name_to_location.get("Printing"));
-		this.Parameter_String_value.setSortandorFluteCombination(name_to_location.get("Sort and/or Flute Combination"));
-		this.Parameter_String_value.setMaterialThickness(name_to_location.get("(Material Thickness)"));
-		this.Parameter_String_value.setGluedMoistureResistant(name_to_location.get("Glued Moisture-Resistant"));
-		this.Parameter_String_value.setPET(name_to_location.get("PET"));
-		this.Parameter_String_value.setInd(name_to_location.get("Ind."));
-		this.Parameter_String_value.setChange(name_to_location.get("Change"));
-		this.Parameter_String_value.setYYYYMMDD(name_to_location.get("YYYYMMDD"));
-		this.Parameter_String_value.setDrawn(name_to_location.get("Drawn"));
-		this.Parameter_String_value.setChecked(name_to_location.get("Checked"));
-		this.Parameter_String_value.setRelease(name_to_location.get("Release"));
-		this.Parameter_String_value.setRespdept(name_to_location.get("Resp. dept."));
+		this.Parameter_String_value.setPackagingPN(name_to_value.get("Packaging PN"));
+		this.Parameter_String_value.setDescription(name_to_value.get("Description"));
+		this.Parameter_String_value.setMaterial(name_to_value.get("Material"));
+		this.Parameter_String_value.setWeight(name_to_value.get("Weight"));
+		this.Parameter_String_value.setFEFCOtype(name_to_value.get("FEFCO Type"));
+		this.Parameter_String_value.setInnerDimensions(name_to_value.get("Inner Dimensions"));
+		this.Parameter_String_value.setOutsideDimensions(name_to_value.get("Outside Dimensions"));
+		this.Parameter_String_value.setECT(name_to_value.get("ECT"));
+		this.Parameter_String_value.setBST(name_to_value.get("BST"));
+		this.Parameter_String_value.setBCT(name_to_value.get("BCT"));
+		this.Parameter_String_value.setView(name_to_value.get("View"));
+		this.Parameter_String_value.setManufacturersJoint(name_to_value.get("Manufacturer's Joint"));
+		this.Parameter_String_value.setTypeofJoining(name_to_value.get("Type of Joining"));
+		this.Parameter_String_value.setPrinting(name_to_value.get("Printing"));
+		this.Parameter_String_value.setSortandorFluteCombination(name_to_value.get("Sort and/or Flute Combination"));
+		this.Parameter_String_value.setMaterialThickness(name_to_value.get("(Material Thickness)"));
+		this.Parameter_String_value.setGluedMoistureResistant(name_to_value.get("Glued Moisture-Resistant"));
+		this.Parameter_String_value.setPET(name_to_value.get("PET"));
+		this.Parameter_String_value.setInd(name_to_value.get("Ind."));
+		this.Parameter_String_value.setChange(name_to_value.get("Change"));
+		this.Parameter_String_value.setYYYYMMDD(name_to_value.get("YYYYMMDD"));
+		this.Parameter_String_value.setDrawn(name_to_value.get("Drawn"));
+		this.Parameter_String_value.setChecked(name_to_value.get("Checked"));
+		this.Parameter_String_value.setRelease(name_to_value.get("Release"));
+		this.Parameter_String_value.setRespdept(name_to_value.get("Resp. dept."));
 
 
         //2.存在列表
@@ -106,6 +108,20 @@
         //3.匹配列表
         LinkedHashMap<String, MatchResult> expected_value_and_actual_value = ExcelReader.checkConditions(conditions,name_to_value);
 
+		List<MatchResult> values = new ArrayList<>(expected_value_and_actual_value.values());
+
+		int index = 0;//共6个
+		for (drawingmgmt.proxies.MatchResult result : this.Parameter_List_Match) {//内存地址吗???
+			MatchResult result_java = values.get(index);
+			ExcelReader.writeLineToFile("index: "+index);
+			index += 1;
+			result.setkey(result_java.key);
+			result.setresult(result_java.result);
+			result.setactualValue(result_java.actualValue);
+			result.setexpectedValueInString(result_java.expectedValueInString);
+			// 处理每个 MatchResult 对象
+			// System.out.println(result);
+		}
 
 
 		return this.Parameter_String_value.getMendixObject();
