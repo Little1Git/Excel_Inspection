@@ -98,14 +98,14 @@ public class ExcelReader {
             mr.key = key;
             mr.actualValue=actualValue;
             mr.expectedValue=expectedValues;
-            mr.expectedValueString=String.join(", ", expectedValues);
+            mr.expectedValueInString =String.join(", ", expectedValues);
 
             if (actualValue != null && expectedValues.contains(actualValue)) {
                 System.out.println("pass : key: " + key + ", Get value: " + actualValue);
-                mr.result="pass";
+                mr.result=true;
             } else {
                 System.out.println("failure : key: " + key + ", Expected values: " + expectedValues + ", Actual value: " + actualValue);
-                mr.result="failure";
+                mr.result=false;
             }
             res.put(key,mr);
         }
@@ -184,20 +184,20 @@ public class ExcelReader {
         conditions.put("Printing", new ArrayList<>(Arrays.asList("Yes")));
         conditions.put("Resp. dept.", new ArrayList<>(Arrays.asList("ME/LOD1-CN")));
 
-        List<String> Parameters_to_be_output = Arrays.asList("Packaging PN", "Description", "Weight","Special","FEFCO Type","Inner Dimensions","Outside Dimensions","ECT","BST","BCT");
 
         // 获取第一张表
         Sheet sheet = getFirstSheetFromFile(filePath);
         if (sheet == null) {
-            System.out.println("文件读取失败，请检查文件路径或文件格式。");
+            System.out.println("Failed to read sheet");
             return;
         }
 
         // 读取 Excel 并获取 name_to_value
         LinkedHashMap<String, String> name_to_value = readExcel(name_to_location, sheet);
-        System.out.println("读取结果: " + name_to_value);
+        System.out.println("Read content: " + name_to_value);
 
 //        //1.输出列表   不用做,全保留
+//        List<String> Parameters_to_be_output = Arrays.asList("Packaging PN", "Description", "Weight","Special","FEFCO Type","Inner Dimensions","Outside Dimensions","ECT","BST","BCT");
 //        LinkedHashMap<String, String> key_value_to_print = extractParameters(Parameters_to_be_output,name_to_value);
 
         //2.存在列表
@@ -218,8 +218,6 @@ public class ExcelReader {
         }
 
         System.out.println("pass or failure: "+pass_or_failure);
-
-//        System.out.println("key_value_to_print:" + key_value_to_print);
 
     }
 

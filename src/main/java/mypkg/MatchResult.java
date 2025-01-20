@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class MatchResult {
     public String key;
-    public String result;
+    public boolean result;
     public String actualValue;
     public ArrayList<String> expectedValue;
-    public String expectedValueString;
+    public String expectedValueInString;
 
     // 构造函数
     public MatchResult() {
@@ -20,7 +20,7 @@ public class MatchResult {
                 "key='" + key + '\'' +
                 ", result='" + result + '\'' +
                 ", actualValue='" + actualValue + '\'' +
-                ", expectedValueString='" + expectedValueString + '\'' +
+                ", expectedValueString='" + expectedValueInString + '\'' +
                 ", expectedValue=" + expectedValue +
                 '}';
     }
